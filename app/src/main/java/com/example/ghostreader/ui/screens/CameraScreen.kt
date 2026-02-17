@@ -23,7 +23,7 @@ import com.example.ghostreader.utils.OcrUtils
 import java.io.File
 
 @Composable
-fun CameraScreen(onGoToPages: () -> Unit) {
+fun CameraScreen() {
 
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -77,7 +77,7 @@ fun CameraScreen(onGoToPages: () -> Unit) {
                 .padding(12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Button(onClick = onGoToPages) {
+            Button(onClick = { }) {
                 Text("Pages")
             }
 
