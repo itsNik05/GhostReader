@@ -36,7 +36,7 @@ object PdfUtils {
             val values = ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
                 put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
-                put(MediaStore.MediaColumns.RELATIVE_PATH, "Documents/GhostReader")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, "Download")
             }
 
             val uri = context.contentResolver.insert(
