@@ -1,7 +1,9 @@
 package com.example.ghostreader.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -28,28 +30,52 @@ fun DashboardScreen(onScanClick: () -> Unit) {
                     )
                 )
             )
-            .padding(16.dp)
+            .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
 
         Column {
 
-            // Greeting Section
-            Text(
-                text = "Good Evening,",
-                fontSize = 14.sp,
-                color = Color.Gray
-            )
+            // ===== Greeting Row =====
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
 
-            Text(
-                text = "Nitish 👋",
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
+                Column {
+                    Text(
+                        text = "Good Evening,",
+                        fontSize = 14.sp,
+                        color = Color(0xFF9CA3AF)
+                    )
 
-            Spacer(modifier = Modifier.height(28.dp))
+                    Text(
+                        text = "Nitish 👋",
+                        fontSize = 26.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
 
-            // Stats Row
+                // Avatar Circle
+                Box(
+                    modifier = Modifier
+                        .size(42.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF4F46E5)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "N",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // ===== Stats Row =====
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -59,14 +85,14 @@ fun DashboardScreen(onScanClick: () -> Unit) {
                 StatCard("Saved MB", "2.4")
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(36.dp))
 
-            // Quick Scan Button (Gradient Style)
+            // ===== Quick Scan Gradient Card =====
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(90.dp)
-                    .clip(RoundedCornerShape(28.dp))
+                    .height(100.dp)
+                    .clip(RoundedCornerShape(30.dp))
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(
@@ -75,6 +101,7 @@ fun DashboardScreen(onScanClick: () -> Unit) {
                             )
                         )
                     )
+                    .clickable { onScanClick() }
                     .padding(horizontal = 24.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
@@ -85,6 +112,8 @@ fun DashboardScreen(onScanClick: () -> Unit) {
                         fontSize = 13.sp,
                         color = Color.White.copy(alpha = 0.7f)
                     )
+
+                    Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
                         text = "Quick Scan",
@@ -104,27 +133,28 @@ fun StatCard(title: String, value: String) {
     Card(
         modifier = Modifier
             .width(100.dp)
-            .height(90.dp),
-        shape = RoundedCornerShape(20.dp),
+            .height(95.dp),
+        shape = RoundedCornerShape(22.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFF1E293B)
-        )
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(14.dp),
+                .padding(16.dp),
             verticalArrangement = Arrangement.Center
         ) {
 
             Text(
                 text = title,
                 fontSize = 12.sp,
-                color = Color.Gray
+                color = Color(0xFF9CA3AF)
             )
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = value,
