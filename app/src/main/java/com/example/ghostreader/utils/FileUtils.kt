@@ -25,4 +25,20 @@ object FileUtils {
             file
         )
     }
+    fun createPdfFile(context: Context): File {
+
+        val documentsDir = File(
+            context.getExternalFilesDir(null),
+            "Documents"
+        )
+
+        if (!documentsDir.exists()) {
+            documentsDir.mkdirs()
+        }
+
+        val fileName = "Scan_${System.currentTimeMillis()}.pdf"
+
+        return File(documentsDir, fileName)
+    }
+
 }

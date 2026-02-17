@@ -23,7 +23,9 @@ import com.example.ghostreader.utils.OcrUtils
 import java.io.File
 
 @Composable
-fun CameraScreen() {
+fun CameraScreen(
+    onGoToPages: () -> Unit
+) {
 
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -77,7 +79,10 @@ fun CameraScreen() {
                 .padding(12.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Button(onClick = { }) {
+
+            Button(
+                onClick = onGoToPages
+            ) {
                 Text("Pages")
             }
 
@@ -89,7 +94,8 @@ fun CameraScreen() {
 
                     val photoFile: File = FileUtils.createTempImageFile(context)
 
-                    val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+                    val outputOptions =
+                        ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
                     capture.takePicture(
                         outputOptions,
@@ -97,6 +103,7 @@ fun CameraScreen() {
                         object : ImageCapture.OnImageSavedCallback {
 
                             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+
                                 val uri: Uri = FileUtils.fileToUri(context, photoFile)
                                 ScanSession.addPage(uri)
 

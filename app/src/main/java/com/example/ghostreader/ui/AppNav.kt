@@ -73,8 +73,12 @@ fun AppNav() {
                 )
             }
 
-            composable("scan") {
-                CameraScreen()
+            composable(route = "scan") {
+                CameraScreen(
+                    onGoToPages = {
+                        navController.navigate("pages")
+                    }
+                )
             }
 
             composable("tools") {
@@ -83,6 +87,13 @@ fun AppNav() {
 
             composable("library") {
                 LibraryScreen()
+            }
+            composable(route = "pages") {
+                PagesScreen(
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
             }
         }
     }

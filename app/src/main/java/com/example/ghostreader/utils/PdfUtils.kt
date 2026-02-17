@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
+import java.io.File
 import android.provider.MediaStore
 import java.io.OutputStream
 
@@ -12,6 +13,7 @@ object PdfUtils {
 
     fun createPdf(context: Context, imageUris: List<Uri>): Uri? {
         return try {
+
             val pdfDocument = PdfDocument()
 
             imageUris.forEachIndexed { index, uri ->
@@ -31,28 +33,14 @@ object PdfUtils {
                 pdfDocument.finishPage(page)
             }
 
-            val fileName = "Scan_${System.currentTimeMillis()}.pdf"
+            // 🔥 USE YOUR OWN DIRECTORY
+            val pdfFile = FileUtils.createPdfFile(context)
 
-            val values = ContentValues().apply {
-                put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
-                put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf")
-                put(MediaStore.MediaColumns.RELATIVE_PATH, "Download")
-            }
-
-            val uri = context.contentResolver.insert(
-                MediaStore.Files.getContentUri("external"),
-                values
-            ) ?: return null
-
-            val outputStream: OutputStream? = context.contentResolver.openOutputStream(uri)
-
-            outputStream?.use {
-                pdfDocument.writeTo(it)
-            }
-
+            pdfDocument.writeTo(pdfFile.outputStream())
             pdfDocument.close()
 
-            uri
+            // Convert File → Uri for sharing
+            FileUtils.fileToUri(context, pdfFile)
 
         } catch (e: Exception) {
             e.printStackTrace()
