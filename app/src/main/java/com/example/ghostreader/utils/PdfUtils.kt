@@ -12,39 +12,59 @@ import java.io.OutputStream
 object PdfUtils {
 
     fun createPdf(context: Context, imageUris: List<Uri>): Uri? {
-        return try {
 
+        if (imageUris.isEmpty()) {
+            println("No images provided")
+            return null
+        }
+
+        try {
             val pdfDocument = PdfDocument()
 
-            imageUris.forEachIndexed { index, uri ->
+            var pageNumber = 1
+
+            for (uri in imageUris) {
+
                 val inputStream = context.contentResolver.openInputStream(uri)
+                if (inputStream == null) {
+                    println("Failed to open image URI")
+                    continue
+                }
+
                 val bitmap = BitmapFactory.decodeStream(inputStream)
-                inputStream?.close()
+                inputStream.close()
+
+                if (bitmap == null) {
+                    println("Bitmap decode failed")
+                    continue
+                }
 
                 val pageInfo = PdfDocument.PageInfo.Builder(
                     bitmap.width,
                     bitmap.height,
-                    index + 1
+                    pageNumber++
                 ).create()
 
                 val page = pdfDocument.startPage(pageInfo)
-                val canvas = page.canvas
-                canvas.drawBitmap(bitmap, 0f, 0f, null)
+                page.canvas.drawBitmap(bitmap, 0f, 0f, null)
                 pdfDocument.finishPage(page)
             }
 
-            // 🔥 USE YOUR OWN DIRECTORY
             val pdfFile = FileUtils.createPdfFile(context)
 
             pdfDocument.writeTo(pdfFile.outputStream())
             pdfDocument.close()
 
-            // Convert File → Uri for sharing
-            FileUtils.fileToUri(context, pdfFile)
+            println("PDF created at: ${pdfFile.absolutePath}")
+
+            return FileUtils.fileToUri(context, pdfFile)
 
         } catch (e: Exception) {
             e.printStackTrace()
-            null
+            return null
         }
     }
+
+
+
 }

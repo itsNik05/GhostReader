@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.ghostreader.utils.FileUtils
 import java.io.File
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -55,14 +56,19 @@ fun LibraryScreen() {
                         .combinedClickable(
 
                             onClick = {
-                                val uri = Uri.fromFile(file)
 
-                                val intent = Intent(Intent.ACTION_VIEW)
-                                intent.setDataAndType(uri, "application/pdf")
-                                intent.flags =
-                                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                val uri = FileUtils.fileToUri(context, file)
 
-                                context.startActivity(intent)
+                                val intent = Intent(Intent.ACTION_VIEW).apply {
+                                    setDataAndType(uri, "application/pdf")
+                                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                }
+
+                                try {
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
                             },
 
                             onLongClick = {

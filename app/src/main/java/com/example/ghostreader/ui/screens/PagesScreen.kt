@@ -39,11 +39,12 @@ fun PagesScreen(onBack: () -> Unit) {
                     val pdfUri = PdfUtils.createPdf(context, pages)
 
                     if (pdfUri != null) {
-                        Toast.makeText(context, "Saved in Downloads", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "PDF Created Successfully", Toast.LENGTH_LONG).show()
                         sharePdf(context, pdfUri)
                     } else {
                         Toast.makeText(context, "PDF Failed!", Toast.LENGTH_SHORT).show()
                     }
+
                 }
             ) {
                 Text("Export PDF")
